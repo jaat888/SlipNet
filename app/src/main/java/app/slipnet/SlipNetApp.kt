@@ -21,8 +21,19 @@ class SlipNetApp : Application() {
 
     override fun onCreate() {
         super.onCreate()
+        // VPNJantit ka alag process (:vj) sirf WebView chalata hai: yahan DataStore/channels ko haath nahi lagana
+        if (isVpnJantitProcess()) return
         createNotificationChannels()
         appScope.launch { preferencesDataStore.ensureProxyPortInitialized() }
+    }
+
+    private fun isVpnJantitProcess(): Boolean {
+        return try {
+            val name = java.io.File("/proc/self/cmdline").readText().trim { it <= ' ' }
+            name.endsWith(":vj")
+        } catch (e: Exception) {
+            false
+        }
     }
 
     private fun createNotificationChannels() {
