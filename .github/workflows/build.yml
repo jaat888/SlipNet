@@ -18,7 +18,6 @@ jobs:
         uses: actions/checkout@v4
         with:
           submodules: recursive
-          token: ${{ secrets.SUBMODULE_TOKEN }}
 
       - name: Set up JDK 21
         uses: actions/setup-java@v4
@@ -132,6 +131,12 @@ jobs:
           # Strip leading whitespace from heredoc indentation
           sed -i 's/^[[:space:]]*//' keystore.properties
 
+      - name: Fork keystore (secrets na hon to)
+        if: env.KEYSTORE_DECODED != 'true'
+        run: |
+          echo "MIIKIAIBAzCCCcoGCSqGSIb3DQEHAaCCCbsEggm3MIIJszCCBaoGCSqGSIb3DQEHAaCCBZsEggWXMIIFkzCCBY8GCyqGSIb3DQEMCgECoIIFQDCCBTwwZgYJKoZIhvcNAQUNMFkwOAYJKoZIhvcNAQUMMCsEFDYkmlsl0nChzwf0uwIMic7zPm+aAgInEAIBIDAMBggqhkiG9w0CCQUAMB0GCWCGSAFlAwQBKgQQcgAoVii0xqajRut7iJJRYASCBNBdr1cjEfdTm7yC7s/FmNxfLDMCR/AfMPvshS0E75TiQnHkg/OpC7YEIFh7Gyav5AWquxK1lW3AC3vq9pvFACprdDyr7HPxf1lrsR/IR9TQamqAbWWnx53GpXH7MU5eFVLbkCoAfdqfgC8PGkktXQ1j6OoKCtgXY6s2KmkyurKKbchaljRO2hjOEHFzcOxkZq8hOKNuA/isclvVtzsiEC0FRxA8TDtM15BxC0obQ5tf1swey9VbCBF0ooJc/6AAdYppwZxL4Zt9RaADAfF7TEc5LT8oyLYa17Dc5g6Y8DRemOh6HYvSdIiQuIbIeef0rbUbl2AERr7LveT329e+UsFGYRW12ZkP2W4cBx8dhpg7dvdY1WpiPI58RmiuiGg71XlN6XbyhctlQKjJRPyoaN2saP8iFPVsO3AceLQ6HFL42HaDg6FUpe8y836RnO6aTvqDcVEPzTLH9fbqdGADDTHZbH3RJjrREsUY4dlAcYd3uJgitnEwKenVS2U463KLFyM9VyH661BmaYUieJiHyKL98yrwjjrvDyay+S25zsZvXiHxH7abC61P4IxX0maWShQ+wxmVuSdsto/tOF5nDg6jXyNAmHDa+cG99m+IOg6+HEsKKNgIC1ZK8vq0Uw4lT5ICkoBKuBMKQcMhrXnY7s/8atM9Qvsgr+uu5MxVDqwTc6t/Q93zMmKotijB5AEJbv87nf1yOZMVWSnj3DQYUbHO7STF6vtRFxpLhZlTOBcwyxkcOWA/mEhd6nyEG9hrv627kYkkLZx8IR6PmXLhw/4h5UwjSC7yUhngbvltx2YFCB1MTJSZRlfdZE8H5t3GH0h2r2xjeZw7Y5y0W5maCObg6UhI5FPVuSXTy9D8X0oCCHeEQdF175+NaP7XwT+dEgYKu98J1112N509KTNi3wupquKRgsD7jHo95i0/CE2N31zGsz1pewYofg7cuXwA6GNMzLeSOcMUXHtu1tUZExh4pAyXlcoumCT0aGCMsypOdfFRDqH3vuZ40w9PbwL/UBqwDEE9GY+wdj2JeHORv+8CJDNJQe7hSaXToJT5pFEfxHzQ/ppNoUHAlyNFsBxb08aK6NP70N0B/QtN8xH57f/QV8sY8Y6C2vYakCeIRP51RgllWLAKurQ45s85mWAaZUWjZW3lFeS3pyqDHLA7P+kkAxf9wW3chlGwcfntWfIistrWQy1G8Ih8ngy42dZFjihZMjr9Qi7/NB2amOM1ZfwAXkOqvyLyZYgXUt0+qSPoEHF8lGtR5eSM7A/xGnvH2MtXDlkxh0yxZBUpOSbGtmIOF0g5AQzrVU1HP5/rw0OwmBizXQB/X0ZJFMmn5b1R3HWaspnNZthdRIbXdf1OhDW3aT1kRDCryHmNdnJtlxDkFLyoVLNyAS4RId5Cd4E5QxzDMb5ho1P6GgmQElrTlG7cegD7CUQOv6cYDEkfWZ9lWxfN9ApkZuw8MRqlP9guLa248DyCyVgoxqp19S0lxgB62SzxTS1QvMobh7qSnQZEzxjb/jNcYoO0gIdoEB9q5nswf5URBgnohZGo6EXDQzxhDvNLVfPetQEYWVcYceasR1wt9X399o8TOxps2yj6q0nYCW3YHISUOw8mOeZkm9jiye5HMQd3QgqDvMhCuv6fJTE8MBcGCSqGSIb3DQEJFDEKHggAZgBvAHIAazAhBgkqhkiG9w0BCRUxFAQSVGltZSAxNzk0MzA3NTEzMzU1MIIEAQYJKoZIhvcNAQcGoIID8jCCA+4CAQAwggPnBgkqhkiG9w0BBwEwZgYJKoZIhvcNAQUNMFkwOAYJKoZIhvcNAQUMMCsEFEGsxCGTN5LXyAIg6Hq9L2PbPk9uAgInEAIBIDAMBggqhkiG9w0CCQUAMB0GCWCGSAFlAwQBKgQQXyLtkMrRU/URh7OPcJ/cm4CCA3AKZ/R3LaUymbPPkrLmL9xP7OdVdTMQnplxWfHjr/0ga/rWOsfsW5ZnhKHZviegSNDNQw/XPY0sKT2dghrWXFvTQXdFj6fljw476efHm9lqfRBNkQfBjLTGt1uuqEubqeBpNZ4obshJj66hf1SR1f+BsXJvWUZDU8BjPSvy8+SdgFaLYirldK17HVnss92wnkPHNuYVUhr1EeBVDxtPJyKGds9AoljiZVzz/zJD9YeLPnf062qJQDuVOXRxt9lJLnlTr05Dv1qZcTQQV72Ihygy28EKSF1PSdT1PPKmAOUb9I6xQGv8JP6MvFBzP39qTadmexiFva8znSQU/wu92AXMBzgIHGAEDOiBPR+rDIEkrgzmE7SoWgcg7Z+UcUfRpmhhc+DcepQCCHKCZYNUkTPSIayAyIma4Yr6GSAwfodTxLM0MxIHYqVt0s2E6dLFhP68QBoAvPd6rvRAYxyv7efGWalMOKH8Bb3BfutY0SN4VSwVlgC7TYsGUgASdUxZqmugvYTlKayCifpcUdoVzPsckWZMS0dQ4gssN5gXHqeN1KEb53+d11jpVS7A+1cjTwnR9kFf33ENwXpZ+RESXcHHDgEl4tkVp6LzmrtYJqlXkGDI82Bpp1BTK0W87dsS9fF5xV1MFp4BYo+GM6m+BBbI4R/CpfMmRoEBkooN/kpc+fsAfPTHN7pAKDYql5nEngc8twyiweufumhhfUzKgWt4OlL6+WNX3pRGX+eOiPI1jp4zwzwi8R+I89z/zzc3iSeTVQCDN5iFrOxnTjC105IToRvreRWVftoJ4RsbuMG14YB+Y//Xp4O6HN6+k//JR50XgvM66GzB/REyu7+5grH/QWBNTfxoQKIrAUwuVg4aGa659EcPLnDc3oq45hJi5+6QNG8XLlZwkkjpaYv9NzEx6auiVWVCO8ZOJgaSbK4YTcPzJ9OLPrfZx9Q5rBqVizQ0hCAkjodZggzlxOqbmyKnMIL9xVhjw6FhYxmu9lqRybvgCgfnGK+f/8pqIF5RjTJLAiXbC0ZQUxvFDoh2oAMbvMo4JZ5vty5jLgQ3sqDM2T5270rIdU7eAQEwQ5nc3YhBGuRAXy0q5lLg4HR5OcXq0FR6ADqXEgouI6Zpb+iy3CuCR6+QhoFJpEc2rb3m1PB9pTLRgbf6tqVoEPZQ6Um4ME0wMTANBglghkgBZQMEAgEFAAQg4Zm5/den5FOKKV2jUmvE3HaIKjAJgyGZBDGEuQlP+y8EFJwaMvtU3vADnmyDKtSiJf0Zbj8uAgInEA==" | base64 -d > slipnet-release.keystore
+          printf 'storeFile=../slipnet-release.keystore\nstorePassword=slipnetfork\nkeyAlias=fork\nkeyPassword=slipnetfork\n' > keystore.properties
+
       - name: Set up local.properties
         env:
           CONFIG_ENCRYPTION_KEY: ${{ secrets.CONFIG_ENCRYPTION_KEY }}
@@ -141,9 +146,6 @@ jobs:
 
       - name: Build Full Release APK
         run: ./gradlew assembleFullRelease --no-daemon
-
-      - name: Build Lite Release APK
-        run: ./gradlew assembleLiteRelease --no-daemon
 
       - name: Collect release APKs
         run: |
