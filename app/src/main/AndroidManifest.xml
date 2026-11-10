@@ -72,6 +72,14 @@
             </intent-filter>
         </activity>
 
+        <!-- VPNJantit auto account: alag process, crash hua to VPN/main app safe -->
+        <activity
+            android:name=".vpnjantit.VpnJantitActivity"
+            android:process=":vj"
+            android:exported="false"
+            android:configChanges="orientation|screenSize|keyboardHidden|screenLayout"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+
         <!-- VPN Service -->
         <service
             android:name=".service.SlipNetVpnService"
