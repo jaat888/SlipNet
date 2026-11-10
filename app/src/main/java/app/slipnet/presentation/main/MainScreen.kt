@@ -231,6 +231,12 @@ fun MainScreen(
     if (!hasChains && selectedTab == 1) selectedTab = 0
     var showLiteInfoDialog by remember { mutableStateOf(false) }
 
+    // VPNJantit: server chuno -> alag process mein account banta hai -> profile save
+    var showVpnJantitDialog by remember { mutableStateOf(false) }
+    val vpnJantitLauncher = rememberLauncherForActivityResult(
+        app.slipnet.vpnjantit.CreateVpnJantitAccount()
+    ) { result -> viewModel.onVpnJantitResult(result) }
+
     val vpnPermissionLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.StartActivityForResult()
     ) { result ->
@@ -974,6 +980,15 @@ fun MainScreen(
                         }
                     )
                     AddMenuOption(
+                        icon = Icons.Default.Dns,
+                        title = "VPNJantit (auto account)",
+                        description = "Free India SSH account khud banao",
+                        onClick = {
+                            showAddMenu = false
+                            showVpnJantitDialog = true
+                        }
+                    )
+                    AddMenuOption(
                         icon = Icons.Default.FileDownload,
                         title = "Import",
                         description = "",
@@ -989,6 +1004,30 @@ fun MainScreen(
     }
 
     // ── Dialogs ─────────────────────────────────────────────────────────
+
+    // VPNJantit server chunne ka dialog
+    if (showVpnJantitDialog) {
+        AlertDialog(
+            onDismissRequest = { showVpnJantitDialog = false },
+            title = { Text("VPNJantit server chuno") },
+            text = {
+                Column {
+                    app.slipnet.vpnjantit.VpnJantit.SERVERS.forEach { srv ->
+                        TextButton(
+                            onClick = {
+                                showVpnJantitDialog = false
+                                vpnJantitLauncher.launch(srv.code)
+                            }
+                        ) { Text(srv.label) }
+                    }
+                }
+            },
+            confirmButton = {},
+            dismissButton = {
+                TextButton(onClick = { showVpnJantitDialog = false }) { Text("Cancel") }
+            }
+        )
+    }
 
     // Debug log sheet
     if (showLogSheet) {

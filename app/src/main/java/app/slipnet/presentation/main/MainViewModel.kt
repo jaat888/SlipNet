@@ -461,6 +461,31 @@ class MainViewModel @Inject constructor(
         _uiState.value = _uiState.value.copy(error = null)
     }
 
+    /** VPNJantit auto-account ka nateeja: kamyab ho to profile save, warna sahi message dikhao. */
+    fun onVpnJantitResult(result: app.slipnet.vpnjantit.VpnJantitResult) {
+        when (result) {
+            is app.slipnet.vpnjantit.VpnJantitResult.Ok -> viewModelScope.launch {
+                try {
+                    saveProfileUseCase(result.account.toProfile())
+                    _uiState.value = _uiState.value.copy(
+                        error = "VPNJantit account ban gaya: " + result.account.username
+                    )
+                } catch (e: Exception) {
+                    _uiState.value = _uiState.value.copy(error = "Account save nahi hua: " + e.message)
+                }
+            }
+            is app.slipnet.vpnjantit.VpnJantitResult.Failed -> {
+                val wait = if (result.retryAfterMs > 0) {
+                    " (" + (result.retryAfterMs / 60000L) + " min baad dobara try karo)"
+                } else {
+                    ""
+                }
+                _uiState.value = _uiState.value.copy(error = "VPNJantit: " + result.message + wait)
+            }
+            app.slipnet.vpnjantit.VpnJantitResult.Cancelled -> {}
+        }
+    }
+
     // ── Profile Management ──────────────────────────────────────────────
 
     fun moveProfile(fromIndex: Int, toIndex: Int) {
